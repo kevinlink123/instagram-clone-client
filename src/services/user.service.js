@@ -15,8 +15,8 @@ class UserService {
         });
     };
 
-    getAllImages() {
-        return axios.get(API_URL + 'image/all', {
+    getAllImages(pages) {
+        return axios.get(API_URL + 'image/all?pages=' + pages, {
             headers: authHeader()
         })
     }
@@ -33,16 +33,6 @@ class UserService {
     postLike(userId, imageId) {
         const data = {userId, imageId};
         return axios.post(API_URL + 'like', data, {
-            headers: authHeader()
-        });
-    }
-
-    async getLike(userId, imageId) {
-        const data = {userId, imageId}
-        return await axios.get(API_URL + 'like', {
-            params: {
-                data
-            },
             headers: authHeader()
         });
     }

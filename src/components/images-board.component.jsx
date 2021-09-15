@@ -10,21 +10,32 @@ export default class ImagesBoard extends Component {
   constructor(props) {
     super(props);
     this.renderImages = this.renderImages.bind(this);
+    this.hanldePagination = this.hanldePagination.bind(this);
 
     this.state = {
-      message: "asdasd",
+      pages: 1,
       imagesData: []
     };
   }
 
   async componentDidMount() {
-    const response = await UserService.getAllImages();
+    const response = await UserService.getAllImages(this.state.pages);
     const { images } = response.data;
 
     this.setState({
       imagesData: images
     });
 
+  }
+
+  async hanldePagination(event) {
+    const response = await UserService.getAllImages(this.state.pages + 1);
+    const { images } = response.data;
+
+    this.setState({
+      pages: this.state.pages + 1,
+      imagesData: images,
+    })
   }
 
   renderImages() {
@@ -36,7 +47,7 @@ export default class ImagesBoard extends Component {
       const hasLike = likes.find((like) => {
         return (like.imageId === image.id && like.userId === loggedUser.id);
       });
-      
+
       const imageComponent = (<Image 
         src={image.url} 
         description={image.description} 
@@ -59,6 +70,7 @@ export default class ImagesBoard extends Component {
   render() {
     return (
       <section className="text-gray-600 body-font">
+        
         <div className="container px-5 py-24 mx-auto">
         
         
@@ -74,18 +86,17 @@ export default class ImagesBoard extends Component {
               Upload Image
             </Link>
           </div>
-
           <div className="flex flex-wrap -m-4">
-
-            {/* <div className="lg:w-1/4 p-4 w-1/2">
-              <a className="block relative h-48 rounded overflow-hidden">
-                <img alt="ecommerce" className="object-cover object-center w-full h-full block" src="https://star-name-registry.com/blog/images/d/0/1/f/a/d01faec7ef04415eec34c1bfe61913e167fb26c7-snr-blog-37-resized.jpg"/>
-              </a>
-              <div className="mt-4">
-                <p className="mt-1 text-center">asdasdsa</p>
-              </div>
-            </div> */}
             {this.renderImages()}
+          </div>
+
+          <div className>
+            <svg onClick={this.hanldePagination} xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto mt-32" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+            </svg> 
+            <div className='text-center'>
+              LOAD MORE
+            </div>
           </div>
         </div>
       </section>
