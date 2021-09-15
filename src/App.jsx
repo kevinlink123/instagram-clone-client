@@ -9,7 +9,7 @@ import Home from './components/home.component'
 import Login from './components/auth/login.component';
 import Profile from "./components/auth/profile.component";
 import Register from './components/auth/register.component';
-import BoardUser from "./components/board-user.component";
+import imagesBoard from "./components/images-board.component";
 import Upload from './components/upload.component'
 
 
@@ -59,8 +59,8 @@ class App extends Component {
                   </Link>
 
                   {currentUser && (
-                      <Link to={'/user'} className='hover:text-indigo-600 text-gray-700'>
-                        Board
+                      <Link to={'/images-board'} className='hover:text-indigo-600 text-gray-700'>
+                        Images Board
                       </Link>
                   )}
                 </div>
@@ -96,7 +96,7 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path='/profile' component={Profile} />
-            <Route path='/user' component={BoardUser} />
+            <Route path='/images-board' component={imagesBoard} />
             <Route path='/upload-image' component={Upload} />
           </Switch>
         </div>
