@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Form from 'react-validation/build/form';
 import Input from 'react-validation/build/input';
 
+import loading from '../images/loading.png';
+
 import UserService from "../services/user.service";
 
 export default class Upload extends Component {
@@ -16,7 +18,8 @@ export default class Upload extends Component {
       imageUrl: "",
       imageFile: null,
       message: '',
-      successful: false
+      successful: false,
+      loading: false
     };
   }
 
@@ -44,6 +47,9 @@ export default class Upload extends Component {
     event.preventDefault();
 
     try{
+      this.setState({
+        loading: true
+      })
       const imageFile = this.state.imageFile;
       const description = this.state.description;
       const response = await UserService.uploadImage(imageFile, description);
@@ -51,11 +57,13 @@ export default class Upload extends Component {
         message: response.data.message,
         successful: true
       })
+      this.props.history.push('/images-board');
 
     } catch(err) {
       this.setState({
         message: err.response.data.message,
         successful: false,
+        loading: false
 
       })
     }
@@ -108,6 +116,15 @@ export default class Upload extends Component {
                     <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold px-3 border-b-4 border-blue-700 hover:border-blue-500 rounded h-20 w-24' disabled={this.state.loading}>
                         Upload
                     </button>
+                    {this.state.loading && (
+                      <p className=''>
+                      <img 
+                      src={loading} 
+                      alt="loading-img"
+                      className='absolute w-12 mt-3 mx-4 animate-spin' 
+                      />
+                    </p>
+                    )}
                 </div>
                 {this.state.successful && (
                   <div className='flex items-center justify-center mx-auto mt-4'>
